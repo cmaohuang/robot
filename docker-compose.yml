@@ -1,0 +1,23 @@
+hub:
+  image: selenium/hub
+  ports:
+    - "4444:4444"
+chrome:
+  image: selenium/node-chrome-debug
+  ports:
+    - "5900:5900"
+  links:
+    - hub
+firefox:
+  image: selenium/node-firefox-debug
+  ports:
+    - "5901:5900"
+  links:
+    - hub
+robot:
+  build: .
+  links:
+    - hub
+  volumes:
+    - .:/robot
+  command: pybot --loglevel TRACE -d /robot/logs /robot/google.robot
